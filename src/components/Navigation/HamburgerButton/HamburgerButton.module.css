@@ -1,0 +1,33 @@
+.Button {
+    background: transparent;
+    border: none;
+    height: 35px;
+    width: 35px;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.Button:hover,
+.Button:active,
+.Button:focus {
+    border: 1px solid white;
+    border-radius: 10%;
+    outline: none;
+}
+
+.HambuergerButton {
+    width: 70%;
+    height: 8%;
+    display: flex;
+    flex-flow: column;
+    margin: 10% auto;
+    background: white;
+    border-radius: 20px;
+    box-sizing: border-box;
+}
+
+@media (min-width: 500px) {
+    .Button {
+        display: none;
+    }
+}
