@@ -27,11 +27,11 @@ class BurgerBuilder extends Component {
     };
 
     componentDidMount() {
-        axios.get('https://build-a-burger-bb28e.firebaseio.com/ingredients.json')
+        axios.get('/ingredients.json')
             .then(response => {
                 this.setState({ ingredients: response.data })
             })
-            .catch(error => this.setState({error: true}));
+            .catch(error => this.setState({ error: true }));
     }
 
     updatePurchaseState(ingredients) {
@@ -56,28 +56,22 @@ class BurgerBuilder extends Component {
     }
 
     purchaseContinueHandler = () => {
-        this.setState({ loading: true });
-        const order = {
-            ingredients: this.state.ingredients,
-            price: this.state.totalPrice,
-            customer: {
-                name: 'Isuru Dharmadasa',
-                address: {
-                    street: '163/64, Wimukthi Mawatha, New Kandy Rd., Malabe',
-                    zipCode: '10115',
-                    country: 'Sri Lanka'
-                },
-                email: 'nuwanrx@gmail.com'
-            },
-            deliveryOption: 'ASAP'
+        const queryParams = [];
+        for (let i in this.state.ingredients) {
+            queryParams.push(
+                encodeURIComponent(i) + '=' +
+                encodeURIComponent(this.state.ingredients[i])
+            );
         }
-        axios.post('/orders.json', order)
-            .then(response => {
-                this.setState({ loading: false, purchasing: false });
-            })
-            .catch(error => {
-                this.setState({ loading: false, purchasing: false });
-            });
+        queryParams.push(
+            encodeURIComponent('totalPrice') + '=' +
+            encodeURIComponent(this.state.totalPrice)
+        );
+        const queryString = queryParams.join('&');
+        this.props.history.push({
+            pathname: '/checkout',
+            search: ('?' + queryString)
+        });
     }
 
     addIngredientHandler = (type) => {
