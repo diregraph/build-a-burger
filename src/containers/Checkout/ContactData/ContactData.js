@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 import Button from '../../../components/UI/Button/Button';
 import Spinner from '../../../components/UI/Spinner/Spinner';
@@ -148,7 +149,6 @@ class ContactData extends Component {
             formIsValid =
                 updatedOrderForm[updatedOrderFormElementId].valid && formIsValid;
         }
-        console.log(formIsValid);
         this.setState({
             orderForm: updatedOrderForm,
             formIsValid: formIsValid
@@ -195,5 +195,12 @@ class ContactData extends Component {
 
 };
 
+const mapStateToProps = state => {
+    return {
+        ingredients: state.ingredients,
+        price: state.totalPrice
+    }
+}
 
-export default ContactData;
+
+export default connect(mapStateToProps)(ContactData);
