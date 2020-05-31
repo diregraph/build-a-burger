@@ -29,7 +29,7 @@ class Checkout extends Component {
                         path={this.props.match.path + '/contact-data'}
                         component={ContactData} />
                 </div>
-            )
+            );
         }
         return summary;
 

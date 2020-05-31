@@ -6,7 +6,7 @@ import Input from '../../components/UI/Input/Input';
 import Button from '../../components/UI/Button/Button';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import classes from './Auth.module.css';
-import { updateObject } from '../../store/utility';
+import { updateObject, checkValidity } from '../../shared/utility';
 import * as authActions from '../../store/actions/index';
 
 
@@ -48,39 +48,13 @@ class Auth extends Component {
     }
 
     componentDidMount() {
-        if(!this.props.buildingBurger && this.props.authRedirectPath !== '/'){
+        if (!this.props.buildingBurger && this.props.authRedirectPath !== '/') {
             this.props.onSetAuthRedirectPath();
         }
     }
 
     switchAuthMethodHandler = () => {
         this.setState((prevState) => ({ isSignUp: !prevState.isSignUp }));
-    }
-
-    checkValidity(rules, value) {
-        let isValid = true;
-        if (!rules) {
-            return true;
-        }
-
-        if (rules.required) {
-            isValid = value.trim() !== '' && isValid;
-        }
-
-        if (rules.minLength) {
-            isValid = value.length >= rules.minLength && isValid
-        }
-
-        if (rules.maxLength) {
-            isValid = value.length <= rules.maxLength && isValid
-        }
-
-        if (rules.isEmail) {
-            const pattern = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
-            isValid = pattern.test(value) && isValid
-        }
-
-        return isValid;
     }
 
     inputChangeHandler = (event, controlName) => {
@@ -92,7 +66,7 @@ class Auth extends Component {
                     controlElement,
                     {
                         value: event.target.value,
-                        valid: this.checkValidity(controlElement.validation, event.target.value),
+                        valid: checkValidity(controlElement.validation, event.target.value),
                         touched: true
                     })
             }
@@ -110,14 +84,12 @@ class Auth extends Component {
             this.state.isSignUp);
         this.setState({
             controls: {
-                email: {
-                    ...this.state.controls.email,
-                    value: ''
-                },
-                password: {
-                    ...this.state.controls.password,
-                    value: ''
-                }
+                email: updateObject(
+                    this.state.controls.email,
+                    { value: '' }),
+                password: updateObject(
+                    this.state.controls.password,
+                    { value: '' }),
             }
         });
     }
@@ -193,6 +165,7 @@ class Auth extends Component {
 
         let authRedirect = null;
         if (this.props.isAuthenticated) {
+
             authRedirect = <Redirect to={this.props.authRedirectPath} />
         }
 

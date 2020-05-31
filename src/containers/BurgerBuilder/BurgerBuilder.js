@@ -32,7 +32,7 @@ class BurgerBuilder extends Component {
     }
 
     purchaseHandler = () => {
-        if(this.props.isAuthenticated) {
+        if (this.props.isAuthenticated) {
             this.setState({ purchasing: true });
         } else {
             this.props.onSetAuthRedirectPath('/checkout');
@@ -58,7 +58,12 @@ class BurgerBuilder extends Component {
         }
 
         let orderSummary = null;
-        let burgerBuilder = this.props.error ? <p>Ingredients could not be loaded!</p> : <Spinner />
+        let burgerBuilder =
+            this.props.error ?
+                <div style={{ textAlign: 'center' }}>
+                    <p>Ingredients could not be loaded!</p>
+                </div> :
+                <Spinner />
         if (this.props.ingredients) {
             burgerBuilder = (
                 <Aux>
