@@ -2,7 +2,7 @@ export const updateObject = (object, updates) => {
     return {
         ...object,
         ...updates
-    }
+    };
 };
 
 export const checkValidity = (rules, value) => {
